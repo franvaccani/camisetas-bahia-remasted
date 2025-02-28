@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scroll Animation Styles */
+.scroll-animation {
+  opacity: 0;
+  transition: all 0.6s ease-out;
+}
+
+.scroll-animation.animate {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+.scroll-animation-fade-up {
+  transform: translateY(30px);
+}
+
+.scroll-animation-fade-in {
+  /* Just opacity change, no transform */
+}
+
+.scroll-animation-slide-in-left {
+  transform: translateX(-50px);
+}
+
+.scroll-animation-slide-in-right {
+  transform: translateX(50px);
+}
+
+.scroll-animation-zoom-in {
+  transform: scale(0.9);
+}
