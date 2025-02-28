@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from './supabase';
-import { Database } from './database.types';
 
 export interface Product {
   id: string;
@@ -452,7 +451,7 @@ export const createBermudasProducts = async (count: number): Promise<Product[]> 
     const allSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
     // Create products array
-    const productsToInsert = Array.from({ length: count }).map((_, index) => {
+    const productsToInsert = Array.from({ length: count }).map((_) => {
       // Randomly select image
       const randomImageIndex = Math.floor(Math.random() * bermudaImages.length);
       const randomTeamIndex = Math.floor(Math.random() * teams.length);

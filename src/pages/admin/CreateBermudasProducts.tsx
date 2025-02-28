@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBermudasProducts } from '../../lib/productService';
 import { Loader, ArrowLeft, Check } from 'lucide-react';

@@ -12,7 +12,6 @@ const ProductManager = () => {
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [filterMode, setFilterMode] = useState<'all' | 'category'>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 

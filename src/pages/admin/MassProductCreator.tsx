@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Loader, ArrowLeft, Check, AlertCircle, Plus, Trash, Image } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { v4 as uuidv4 } from 'uuid';
-import { categories, Category, SubCategory, SubSubCategory, SubSubSubCategory } from '../../lib/categories';
+import { categories, Category } from '../../lib/categories';
 
 interface ProductVariant {
   image: string;
