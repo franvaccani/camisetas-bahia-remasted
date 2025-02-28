@@ -153,26 +153,6 @@ const ProductManager = () => {
     return subsubcategory ? subsubcategory.name : subsubcategoryId;
   };
 
-  // Get subsubsubcategory name from IDs
-  const getSubsubsubcategoryName = (
-    categoryId: string, 
-    subcategoryId: string, 
-    subsubcategoryId: string,
-    subsubsubcategoryId: string
-  ): string => {
-    const category = (categories as Category[]).find(c => c.id === categoryId);
-    if (!category) return subsubsubcategoryId;
-    
-    const subcategory = category.subcategories?.find(s => s.id === subcategoryId);
-    if (!subcategory) return subsubsubcategoryId;
-    
-    const subsubcategory = subcategory.subcategories?.find(s => s.id === subsubcategoryId);
-    if (!subsubcategory) return subsubsubcategoryId;
-    
-    const subsubsubcategory = subsubcategory.subcategories?.find(s => s.id === subsubsubcategoryId);
-    return subsubsubcategory ? subsubsubcategory.name : subsubsubcategoryId;
-  };
-
   // Render product table
   const renderProductTable = (productsToRender: Product[]) => {
     return (
@@ -265,7 +245,7 @@ const ProductManager = () => {
   };
 
   // Render category section
-  const renderCategorySection = (category: Category, level = 0) => {
+  const renderCategorySection = (category: Category) => {
     const categoryId = category.id;
     const isExpanded = isCategoryExpanded(categoryId);
     const productsInCategory = productsByCategory[categoryId] || [];
@@ -327,9 +307,6 @@ const ProductManager = () => {
                                 const hasSubsubcategoryProducts = productsInSubsubcategory.length > 0;
                                 const hasSubsubsubcategories = subsubcategory.subcategories && subsubcategory.subcategories.length > 0;
                                 const isSubsubcategoryExpanded = isCategoryExpanded(subsubcategoryKey);
-                                
-                                // Special case for shorts category
-                                const isShortsCategory = subsubcategory.id === 'shorts';
                                 
                                 return (
                                   <div key={subsubcategoryKey} className="ml-4">
