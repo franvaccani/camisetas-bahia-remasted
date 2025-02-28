@@ -1,87 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Truck, CreditCard, ShieldCheck, Search } from 'lucide-react';
+import { Truck, CreditCard, ShieldCheck} from 'lucide-react';
 import { getProducts, Product } from '../lib/productService';
 import ScrollAnimation from '../components/ScrollAnimation';
 import Carrousel from '../components/Carrousel';
-const categories = [
+
+interface CategorySubcategory {
+  id: string;
+  name: string;
+  subItems?: string[];
+  mappedCategory?: string;
+  mappedSubcategory?: string;
+  mappedSubsubcategory?: string;
+  mappedSubsubsubcategory?: string;
+}
+
+interface CategoryItem {
+  id: string;
+  name: string;
+  image: string;
+  subcategories: CategorySubcategory[];
+  mappedCategory?: string;
+  mappedSubcategory?: string;
+  mappedSubsubcategory?: string;
+}
+
+const categories: CategoryItem[] = [
   {
     id: 'camisetas-retro',
     name: 'Camisetas Retro',
     image: 'https://images.unsplash.com/photo-1577471488278-16eec37ffcc2?q=80&w=800&auto=format&fit=crop',
     subcategories: [
-      { id: 'retro-clubes-internacionales', name: 'Clubes Internacionales' },
-      { id: 'retro-clubes-nacionales', name: 'Clubes Nacionales' },
-      { id: 'retro-selecciones', name: 'Selecciones Nacionales' }
-    ]
+      { id: 'retro-clubes-internacionales', name: 'Clubes Internacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camisetas-retro', mappedSubsubsubcategory: 'retro-clubes-internacionales' },
+      { id: 'retro-clubes-nacionales', name: 'Clubes Nacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camisetas-retro', mappedSubsubsubcategory: 'retro-clubes-nacionales' },
+      { id: 'retro-selecciones', name: 'Selecciones Nacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camisetas-retro', mappedSubsubsubcategory: 'retro-selecciones-nacionales' }
+    ],
+    mappedCategory: 'adulto',
+    mappedSubcategory: 'futbol',
+    mappedSubsubcategory: 'camisetas-retro'
   },
   {
     id: 'camisetas',
     name: 'Camisetas',
     image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=800&auto=format&fit=crop',
     subcategories: [
-      { id: 'camisetas-clubes-nacionales', name: 'Clubes Nacionales' },
-      { id: 'camisetas-clubes-internacionales', name: 'Clubes Internacionales' },
-      { id: 'camisetas-selecciones', name: 'Selecciones Nacionales' }
-    ]
+      { id: 'camisetas-clubes-nacionales', name: 'Clubes Nacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camisetas', mappedSubsubsubcategory: 'clubes-nacionales' },
+      { id: 'camisetas-clubes-internacionales', name: 'Clubes Internacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camisetas', mappedSubsubsubcategory: 'clubes-internacionales' },
+      { id: 'camisetas-selecciones', name: 'Selecciones Nacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camisetas', mappedSubsubsubcategory: 'selecciones-nacionales' }
+    ],
+    mappedCategory: 'adulto',
+    mappedSubcategory: 'futbol',
+    mappedSubsubcategory: 'camisetas'
   },
   {
     id: 'remeras-algodon',
     name: 'Remeras Algodón',
     image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop',
     subcategories: [
-      { id: 'remeras-clubes-internacionales', name: 'Clubes Internacionales' },
-      { id: 'remeras-clubes-nacionales', name: 'Clubes Nacionales', subItems: [
-        'River', 'Boca', 'Racing', 'San Lorenzo', 'Independiente', 'AFA', 'Resto'
-      ]},
-    ]
+      { id: 'remeras-clubes-internacionales', name: 'Clubes Internacionales', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'remeras-algodon', mappedSubsubsubcategory: 'algodon-clubes-internacionales' },
+    ],
+    mappedCategory: 'adulto',
+    mappedSubcategory: 'futbol',
+    mappedSubsubcategory: 'remeras-algodon'
   },
   {
     id: 'camperas-buzos',
     name: 'Camperas y Buzos',
-    image: 'https://images.unsplash.com/photo-1556172662-322739ade232?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop',
     subcategories: [
-      { id: 'camperas-internacional', name: 'Internacional' },
-      { id: 'camperas-nacional', name: 'Nacional' },
-      { id: 'camperas-afa', name: 'AFA' }
-    ]
+      { id: 'camperas-internacional', name: 'Internacional', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camperas-buzos', mappedSubsubsubcategory: 'internacional' },
+      { id: 'camperas-nacional', name: 'Nacional', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camperas-buzos', mappedSubsubsubcategory: 'nacional' },
+      { id: 'camperas-afa', name: 'AFA', mappedCategory: 'adulto', mappedSubcategory: 'futbol', mappedSubsubcategory: 'camperas-buzos', mappedSubsubsubcategory: 'afa' }
+    ],
+    mappedCategory: 'adulto',
+    mappedSubcategory: 'futbol',
+    mappedSubsubcategory: 'camperas-buzos'
   },
   {
     id: 'musculosas',
     name: 'Musculosas',
     image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop',
     subcategories: [
-      { id: 'musculosas-calidad-original', name: 'Calidad Original' },
-      { id: 'musculosas-apliques', name: 'Apliques' },
-      { id: 'musculosas-replicas', name: 'Replicas' },
-      { id: 'musculosas-sublimadas', name: 'Sublimadas' }
-    ]
+      { id: 'musculosas-calidad-original', name: 'Calidad Original', mappedCategory: 'adulto', mappedSubcategory: 'basquet', mappedSubsubcategory: 'basquet-musculosas', mappedSubsubsubcategory: 'calidad-original' },
+      { id: 'musculosas-apliques', name: 'Apliques', mappedCategory: 'adulto', mappedSubcategory: 'basquet', mappedSubsubcategory: 'basquet-musculosas', mappedSubsubsubcategory: 'apliques' },
+      { id: 'musculosas-replicas', name: 'Replicas', mappedCategory: 'adulto', mappedSubcategory: 'basquet', mappedSubsubcategory: 'basquet-musculosas', mappedSubsubsubcategory: 'replicas' },
+      { id: 'musculosas-sublimadas', name: 'Sublimadas', mappedCategory: 'adulto', mappedSubcategory: 'basquet', mappedSubsubcategory: 'basquet-musculosas', mappedSubsubsubcategory: 'sublimadas' }
+    ],
+    mappedCategory: 'adulto',
+    mappedSubcategory: 'basquet',
+    mappedSubsubcategory: 'basquet-musculosas'
   },
   {
     id: 'ninos',
     name: 'Niños',
     image: 'https://images.unsplash.com/photo-1577217534079-41d6bb68ac50?q=80&w=800&auto=format&fit=crop',
     subcategories: [
-      { id: 'futbol-nino', name: 'Fútbol Niño' },
-      { id: 'basket-nino', name: 'Basket Niño' }
-    ]
-  },
-  {
-    id: 'otros',
-    name: 'Otros',
-    image: 'https://images.unsplash.com/photo-1580087433295-ab2600c1030e?q=80&w=800&auto=format&fit=crop',
-    subcategories: [
-      { id: 'shorts', name: 'Shorts' },
-      { id: 'bermudas', name: 'Bermudas' },
-      { id: 'chupines', name: 'Chupines' },
-      { id: 'gorras', name: 'Gorras' },
-      { id: 'merchandising', name: 'Merchandising' }
-    ]
+      { id: 'futbol-nino', name: 'Fútbol Niño', mappedCategory: 'nino', mappedSubcategory: 'nino-futbol' },
+      { id: 'basket-nino', name: 'Basket Niño', mappedCategory: 'nino', mappedSubcategory: 'nino-basquet' }
+    ],
+    mappedCategory: 'nino',
+    mappedSubcategory: 'futbol'
   }
 ];
 
 const Home = () => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -153,11 +175,46 @@ const Home = () => {
     loadFeaturedProducts();
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/productos?buscar=${encodeURIComponent(searchTerm.trim())}`);
+  // Function to generate the correct URL for a category
+  const getCategoryUrl = (category: CategoryItem, subcategory?: CategorySubcategory) => {
+    let url = '/productos?';
+    
+    if (subcategory && subcategory.mappedCategory) {
+      // If we're linking to a subcategory and it has mapping data, use that
+      url += `categoria=${subcategory.mappedCategory}`;
+      
+      if (subcategory.mappedSubcategory) {
+        url += `&subcategoria=${subcategory.mappedSubcategory}`;
+        
+        if (subcategory.mappedSubsubcategory) {
+          url += `&subsubcategoria=${subcategory.mappedSubsubcategory}`;
+          
+          if (subcategory.mappedSubsubsubcategory) {
+            url += `&subsubsubcategoria=${subcategory.mappedSubsubsubcategory}`;
+          }
+        }
+      }
+    } else if (category.mappedCategory) {
+      // Otherwise use the category mapping data
+      url += `categoria=${category.mappedCategory}`;
+      
+      if (category.mappedSubcategory) {
+        url += `&subcategoria=${category.mappedSubcategory}`;
+        
+        if (category.mappedSubsubcategory) {
+          url += `&subsubcategoria=${category.mappedSubsubcategory}`;
+        }
+      }
+    } else {
+      // Fallback to the old way if no mapping data is available
+      url += `categoria=${category.id}`;
+      
+      if (subcategory) {
+        url += `&subcategoria=${subcategory.id}`;
+      }
     }
+    
+    return url;
   };
 
   return (
@@ -174,32 +231,12 @@ const Home = () => {
         </div>
         
         <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl max-sm:text-3xl md:text-6xl font-bold text-white mb-6">
             Las Mejores Camisetas de Fútbol y Basket
           </h1>
-          <p className="text-xl text-white mb-8 max-w-2xl">
+          <p className="text-xl text-white max-sm:text-xl max-w-2xl">
             Encontrá tu camiseta favorita entre nuestra amplia colección de equipos.
           </p>
-          
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="w-full max-w-2xl relative">
-            <input
-              type="text"
-              placeholder="Buscar camisetas..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-6 py-4 pl-12 rounded-lg text-lg focus:ring-2 focus:ring-black focus:border-transparent"
-            />
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-6 w-6" />
-            <button 
-              type="submit"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-black hover:text-gray-400"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
-          </form>
         </div>
       </section>
 
@@ -251,11 +288,11 @@ const Home = () => {
             {categories.map((category, index) => (
               <ScrollAnimation 
                 key={category.id} 
-                animation="fade-up" 
-                delay={100 * (index % 3)}
+                animation="zoom-in" 
+                delay={index * 100}
               >
                 <Link
-                  to={`/productos?categoria=${category.id}`}
+                  to={getCategoryUrl(category)}
                   className="relative group overflow-hidden rounded-lg aspect-h-9"
                 >
                   <img
@@ -269,7 +306,17 @@ const Home = () => {
                       <ul className="space-y-1">
                         {category.subcategories.map((sub) => (
                           <li key={sub.id} className="text-gray-200 text-sm">
-                            {sub.name}
+                            {/* Fix: Use span instead of Link to avoid nested anchor tags */}
+                            <span 
+                              className="hover:text-white hover:underline cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                navigate(getCategoryUrl(category, sub));
+                              }}
+                            >
+                              {sub.name}
+                            </span>
                             {sub.subItems && (
                               <ul className="ml-4 mt-1 space-y-1">
                                 {sub.subItems.map((item) => (
@@ -288,6 +335,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
 
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
@@ -334,7 +382,7 @@ const Home = () => {
 
       {/* Newsletter Section */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 mb-14 sm:px-6 lg:px-8 text-center">
           <ScrollAnimation animation="fade-up">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">¿Querés recibir nuestras ofertas?</h2>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -348,7 +396,7 @@ const Home = () => {
               />
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                className="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
                 Suscribirse
               </button>

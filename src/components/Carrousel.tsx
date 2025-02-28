@@ -32,7 +32,7 @@ export default function InfiniteCarousel() {
         animate={{ x: ["0%", "-50%"] }} // Desplazamiento infinito
         transition={{
           ease: "linear",
-          duration: 50, // Velocidad del desplazamiento (ajustable)
+          duration: 40, // Velocidad del desplazamiento (ajustable)
           repeat: Infinity, // Animación sin fin
         }}
       >

@@ -339,7 +339,7 @@ const ProductForm = () => {
             onClick={toggleMultipleMode}
             className={`px-4 py-2 rounded-md text-sm font-medium ${
               isMultipleMode
-                ? 'bg-green-600 text-white'
+                ? 'bg-black text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -566,7 +566,7 @@ const ProductForm = () => {
                   <button
                     type="button"
                     onClick={addImageField}
-                    className="text-green-600 hover:text-green-900 text-sm font-medium"
+                    className="text-black hover:text-gray-400 text-sm font-medium"
                   >
                     + Agregar otra imagen
                   </button>
@@ -699,7 +699,7 @@ const ProductForm = () => {
                     onClick={() => handleSizeToggle(size)}
                     className={`px-4 py-2 rounded-md ${
                       formData.sizes.includes(size)
-                        ? 'bg-green-600 text-white'
+                        ? 'bg-black text-white'
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
                   >
@@ -721,7 +721,7 @@ const ProductForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center disabled:opacity-50"
+              className="px-4 py-2 bg-black text-white rounded-md hover:bg-green-700 flex items-center disabled:opacity-50"
             >
               {loading ? (
                 <>

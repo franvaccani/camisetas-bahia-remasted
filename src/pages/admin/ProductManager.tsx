@@ -406,18 +406,18 @@ const ProductManager = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Administrar Productos</h1>
+        <h1 className="text-2xl max-sm:pr-2 max-sm:text-xl font-bold text-gray-900">Administrar Productos</h1>
         <div className="flex space-x-2">
           <button
             onClick={() => navigate('/admin/mass-image-uploader')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-700 transition"
+            className="bg-black max-sm:text-xs max-sm:w-32 text-white px-4 py-2 rounded-lg flex items-center hover:bg-gray-400 transition"
           >
             <Upload className="h-5 w-5 mr-2" />
-            Subir Imágenes en Masa
+            Subir en Masa
           </button>
           <button
             onClick={() => navigate('/admin/products/new')}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-700 transition"
+            className="bg-black text-white max-sm:text-xs px-4 py-2 rounded-lg flex items-center hover:bg-gray-400 transition"
           >
             <Plus className="h-5 w-5 mr-2" />
             Nuevo Producto
@@ -453,7 +453,7 @@ const ProductManager = () => {
             onClick={() => setFilterMode('all')}
             className={`px-4 py-2 rounded-lg ${
               filterMode === 'all'
-                ? 'bg-green-600 text-white'
+                ? 'bg-black text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -463,7 +463,7 @@ const ProductManager = () => {
             onClick={() => setFilterMode('category')}
             className={`px-4 py-2 rounded-lg ${
               filterMode === 'category'
-                ? 'bg-green-600 text-white'
+                ? 'bg-black text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >

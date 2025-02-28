@@ -111,20 +111,20 @@ const Navbar = () => {
 
       {/* Search Bar (Expandable) */}
       {showSearch && (
-        <div className="bg-blue-700 py-3 px-4">
+        <div className="py-3 px-4">
           <form onSubmit={handleSearch} className="max-w-3xl mx-auto relative">
             <input
               type="text"
               placeholder="Buscar productos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 pl-10 pr-12 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 pl-10 pr-12 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-black"
               autoFocus
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
             <button 
               type="submit"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-600 hover:text-blue-800"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black hover:text-black"
             >
               <span className="sr-only">Buscar</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -141,28 +141,28 @@ const Navbar = () => {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link 
               to="/" 
-              className="block px-3 py-2 hover:bg-blue-700 rounded-md"
+              className="block px-3 py-2 hover:bg-black rounded-md"
               onClick={() => setIsOpen(false)}
             >
               Inicio
             </Link>
             <Link 
               to="/productos" 
-              className="block px-3 py-2 hover:bg-blue-700 rounded-md"
+              className="block px-3 py-2 hover:bg-black rounded-md"
               onClick={() => setIsOpen(false)}
             >
               Productos
             </Link>
             <Link 
               to="/sobre-nosotros" 
-              className="block px-3 py-2 hover:bg-blue-700 rounded-md"
+              className="block px-3 py-2 hover:bg-black rounded-md"
               onClick={() => setIsOpen(false)}
             >
               Nosotros
             </Link>
             <Link 
               to="/contacto" 
-              className="block px-3 py-2 hover:bg-blue-700 rounded-md"
+              className="block px-3 py-2 hover:bg-black rounded-md"
               onClick={() => setIsOpen(false)}
             >
               Contacto
@@ -171,7 +171,7 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/admin/products" 
-                  className="block px-3 py-2 hover:bg-blue-700 rounded-md"
+                  className="block px-3 py-2 hover:bg-black rounded-md"
                   onClick={() => setIsOpen(false)}
                 >
                   Admin
@@ -182,7 +182,7 @@ const Navbar = () => {
                     setIsOpen(false);
                   }}
                   disabled={loading}
-                  className="block w-full text-left px-3 py-2 hover:bg-blue-700 rounded-md"
+                  className="block w-full text-left px-3 py-2 hover:bg-black rounded-md"
                 >
                   {loading ? 'Cerrando...' : 'Cerrar Sesión'}
                 </button>
