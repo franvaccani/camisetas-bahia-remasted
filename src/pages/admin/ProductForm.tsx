@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Save, ArrowLeft, X, Plus, Trash, Info } from 'lucide-react';
-import { categories } from '../../lib/categories';
+import { categories, Category} from '../../lib/categories';
 import { getProductById, createProduct, updateProduct, createMultipleProducts } from '../../lib/productService';
 
 interface ProductFormData {
@@ -14,7 +14,9 @@ interface ProductFormData {
   images: string[];
   temporada: string | null;
   marca: string | null;
+  description: string | null;
   sizes: string[];
+  user_id?: string;
 }
 
 interface ProductVariant {
@@ -32,6 +34,7 @@ const initialFormData: ProductFormData = {
   images: [''],
   temporada: null,
   marca: null,
+  description: null,
   sizes: []
 };
 
@@ -81,7 +84,9 @@ const ProductForm = () => {
           images: product.images,
           temporada: product.temporada,
           marca: product.marca,
-          sizes: product.sizes
+          description: product.description,
+          sizes: product.sizes,
+          user_id: product.user_id
         });
         setSelectedCategory(product.category);
         setSelectedSubcategory(product.subcategory);
@@ -126,7 +131,10 @@ const ProductForm = () => {
         }
         
         console.log('Creating multiple products with data:', formData, validVariants);
-        const result = await createMultipleProducts(formData, validVariants);
+        const result = await createMultipleProducts({
+          ...formData,
+          user_id: formData.user_id || 'system'
+        }, validVariants);
         
         if (!result || result.length === 0) {
           throw new Error('No se pudieron crear los productos');
@@ -144,14 +152,20 @@ const ProductForm = () => {
       if (id) {
         // Update existing product
         console.log('Updating product with data:', formData);
-        const updatedProduct = await updateProduct(id, formData);
+        const updatedProduct = await updateProduct(id, {
+          ...formData,
+          user_id: formData.user_id || 'system'
+        });
         if (!updatedProduct) {
           throw new Error('No se pudo actualizar el producto');
         }
       } else {
         // Create new product
         console.log('Creating new product with data:', formData);
-        const newProduct = await createProduct(formData);
+        const newProduct = await createProduct({
+          ...formData,
+          user_id: formData.user_id || 'system'
+        });
         if (!newProduct) {
           throw new Error('No se pudo crear el producto');
         }
@@ -243,18 +257,18 @@ const ProductForm = () => {
   };
 
   const getSubcategories = () => {
-    const category = categories.find(c => c.id === selectedCategory);
+    const category = (categories as Category[]).find(c => c.id === selectedCategory);
     return category?.subcategories || [];
   };
 
   const getSubsubcategories = () => {
-    const category = categories.find(c => c.id === selectedCategory);
+    const category = (categories as Category[]).find(c => c.id === selectedCategory);
     const subcategory = category?.subcategories?.find(s => s.id === selectedSubcategory);
     return subcategory?.subcategories || [];
   };
 
   const getSubsubsubcategories = () => {
-    const category = categories.find(c => c.id === selectedCategory);
+    const category = (categories as Category[]).find(c => c.id === selectedCategory);
     const subcategory = category?.subcategories?.find(s => s.id === selectedSubcategory);
     const subsubcategory = subcategory?.subcategories?.find(s => s.id === selectedSubsubcategory);
     return subsubcategory?.subcategories || [];
@@ -371,7 +385,7 @@ const ProductForm = () => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                 >
                   <option value="">Seleccionar categoría</option>
-                  {categories.map((category) => (
+                  {(categories as Category[]).map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
                     </option>
@@ -466,6 +480,20 @@ const ProductForm = () => {
               <p className="mt-1 text-sm text-gray-500">
                 Deje este campo vacío si el precio no está disponible.
               </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Descripción (Opcional)
+              </label>
+              <textarea
+                name="description"
+                value={formData.description || ''}
+                onChange={handleChange}
+                rows={3}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                placeholder="Descripción del producto"
+              />
             </div>
 
             {!isMultipleMode && (
